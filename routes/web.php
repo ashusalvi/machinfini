@@ -465,6 +465,13 @@ Route::group(['prefix'=>'admin', 'middleware' => ['auth', 'admin'] ], function()
     Route::POST('save_partner','channelPartner\channgelPartnerController@store')->name('save_partner');
     Route::get('delete_partner/{id}','channelPartner\channgelPartnerController@delete')->name('delete_partner');
     Route::get('edit_partner','channelPartner\channgelPartnerController@edit')->name('edit_partner');
+
+    Route::group(['prefix' => 'curriculum','as'=>'curriculum.'], function() {
+        Route::get('create', 'curriculum\curriculumController@create')->name('create');
+        Route::post('save', 'curriculum\curriculumController@save')->name('save');
+        Route::get('list', 'curriculum\curriculumController@list')->name('list');
+        Route::get('report', 'curriculum\curriculumController@report')->name('report');
+    });
     
 });
 
