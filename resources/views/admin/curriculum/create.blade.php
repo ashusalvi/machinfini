@@ -38,7 +38,8 @@
     </div>
 
     <div class="form-body">
-        <form method="post" action="{{ route('curriculum.save') }}" style="max-width: 1039px;">
+        <form method="post" action="{{ route('curriculum.save') }}" enctype="multipart/form-data"
+            style="max-width: 1039px;">
 
             <h5 class="title"> Details</h5>
 
@@ -86,6 +87,12 @@
                         value="{{ old('price') }}" required>
                     {!! form_error($errors, 'price')->message !!}
                 </div>
+                {{-- <div class="form-group col-md-4 {{ form_error($errors, 'oprice')->class }}">
+                    <label><b>Original price <span>*</span></b></label>
+                    <input type="text" class="form-control" name="oprice" placeholder="Enter original price"
+                        value="{{ old('oprice') }}" required>
+                    {!! form_error($errors, 'oprice')->message !!}
+                </div> --}}
                 <div class="form-group col-md-4 {{ form_error($errors, 'tag')->class }}">
                     <label><b>Tag</b></label>
                     <select class="form-control" name="tag" id="tag">
@@ -100,6 +107,13 @@
                     <input type="text" class="form-control" name="save" placeholder="Enter save amount in percent"
                         value="{{ old('save') }}" required>
                     {!! form_error($errors, 'save')->message !!}
+                </div>
+
+                <div class="form-group col-md-4 {{ form_error($errors, 'document')->class }}">
+                    <label><b>Upload Document <span>*</span></b></label>
+                    <input type="file" class="form-control" name="document" placeholder="Enter document amount in percent"
+                        value="{{ old('document') }}" required>
+                    {!! form_error($errors, 'document')->message !!}
                 </div>
             </div>
 

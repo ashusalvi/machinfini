@@ -16,6 +16,7 @@ class curriculumController extends Controller
     }
     
     public function save(Request $request){
+        
         $rules = [
             'type' => 'required|max:255',
             'title' => 'required|max:255',
@@ -26,6 +27,11 @@ class curriculumController extends Controller
         ];
         $this->validate($request, $rules);
 
+        $file = $request->file('document');
+        $destinationPath = 'uploadsCurriculum';
+        $file->move($destinationPath,$file->getClientOriginalName());
+        $submitURL = $destinationPath.'/'.$file->getClientOriginalName();
+
     	$result = Curriculum::insert([
     		'type' => $request->type,
     		'title' => $request->title,
@@ -34,6 +40,7 @@ class curriculumController extends Controller
     		'price' => $request->price,
     		'tag' => $request->tag,
     		'save' => $request->save,
+            'file'=>$submitURL,
     	]);
 
     	if(!empty($result)){
