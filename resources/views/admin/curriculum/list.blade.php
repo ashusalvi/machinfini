@@ -15,7 +15,6 @@
         .company-header h4 {
             font-weight: 600;
         }
-
     </style>
 @endsection
 
@@ -42,6 +41,8 @@
                         <th>Price</th>
                         <th>Tag</th>
                         <th>save</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,19 @@
                             <td>{{ $curriculum->price }}</td>
                             <td>{{ $curriculum->tag }}</td>
                             <td>{{ $curriculum->save }}%</td>
+                            <td>
+                                {{ $curriculum->status == 1 ? 'Active' : 'Deleted' }}
+                            </td>
+                            <td>
+                                @php
+                                    if ($curriculum->status == 1) {
+                                        echo '<button type="button" cvalue="0" cid="' . $curriculum->id . '" class="btn btn-danger cAction">Delete</button>';
+                                    } else {
+                                        echo '<button type="button" cvalue="1" cid="' . $curriculum->id . '" class="btn btn-success cAction">Active</button>';
+                                    }
+                                @endphp
+
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -63,4 +77,38 @@
 @endsection
 
 @section('page-js')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(".cAction").click(function() {
+            swal({
+                    title: "Are you sure?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var cid = $(this).attr("cid");
+                        var cvalue = $(this).attr("cvalue");
+                        var actionUrl = "{{ route('curriculum.delete') }}";
+                        $.ajax({
+                            type: "GET",
+                            url: actionUrl,
+                            data: {
+                                'cid': cid,
+                                'cvalue': cvalue
+                            },
+                            success: function(data) {
+                                swal("Curriculum updated successfully!", {
+                                    icon: "success",
+                                });
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        swal("Your curriculum not updated!");
+                    }
+                });
+        });
+    </script>
 @endsection

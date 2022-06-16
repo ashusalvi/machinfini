@@ -1,0 +1,66 @@
+@extends('layouts.admin')
+
+@section('page-header-right')
+@endsection
+
+@section('page-css')
+    <style>
+        .company-header {
+            padding: 20px 10px;
+            background: #b6a4298a;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .company-header h4 {
+            font-weight: 600;
+        }
+    </style>
+@endsection
+
+@section('content')
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            <h4>{{ session()->get('message') }}</h4>
+        </div>
+    @endif
+
+    <div class="company-header">
+        <h4> Curriculum Enquiry </h4>
+    </div>
+
+    <div>
+        <form method="get" style="max-width: 1039px;">
+            <table id="earning_table" class="table table-striped table-bordered display">
+                <thead>
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Curriculum Title</th>
+                        <th>Student Name</th>
+                        <th>Student Email</th>
+                        <th>Student Mobile</th>
+                        <th>Student Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $i = 1;
+                    @endphp
+                    @foreach ($curriculumEnquirys as $curriculum)
+                        <tr>
+                            <td>{{ $i++ }}</td>
+                            <td>{{ $curriculum->Curriculum->title }}</td>
+                            <td>{{ $curriculum->name }}</td>
+                            <td>{{ $curriculum->email }}</td>
+                            <td>{{ $curriculum->mobile }}</td>
+                            <td>{{ $curriculum->message }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </form>
+    </div>
+@endsection
+
+@section('page-js')
+@endsection

@@ -470,6 +470,7 @@ Route::group(['prefix'=>'admin', 'middleware' => ['auth', 'admin'] ], function()
         Route::get('create', 'curriculum\curriculumController@create')->name('create');
         Route::post('save', 'curriculum\curriculumController@save')->name('save');
         Route::get('list', 'curriculum\curriculumController@list')->name('list');
+        Route::get('delete', 'curriculum\curriculumController@delete')->name('delete');
         Route::get('report', 'curriculum\curriculumController@report')->name('report');
     });
     
@@ -688,3 +689,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => ['auth'] ], function() {
 });
 
 Route::get('courses-live/{slug}/live-class', 'zoom\LiveClassController@liveClassStream')->name('live_class_stream');
+
+Route::group(['prefix' => 'curriculum-student','as'=>'curriculumStudent.'], function() {
+    Route::post('curriculum_enquiry', 'curriculum\curriculumController@curriculumEnquiry')->name('curriculumEnquiry');
+});

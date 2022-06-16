@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\Model\Curriculum;
+use App\Model\CurriculumEnquiry;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class curriculumController extends Controller
 {
@@ -51,11 +53,47 @@ class curriculumController extends Controller
     }
 
     public function list(){
-        $curriculums = Curriculum::all();
+        $curriculums = Curriculum::orderBy('id','DESC')->get();
         return view('admin.curriculum.list',compact('curriculums'));
     }
 
+    public function delete(Request $request){
+        echo Curriculum::where('id', $request->cid)->update(['status' => $request->cvalue]);
+    }
+
+    public function curriculumEnquiry(Request $request){
+        $rules = [
+            'curriculum_id' => 'required|max:255',
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'mobile' => 'required|integer',
+            'message' => 'required|max:600',
+        ];
+        $this->validate($request, $rules);
+        $user_id = 0;
+        if (Auth::check()) {
+             $user_id = Auth::user()->id;
+        }
+
+        $result = CurriculumEnquiry::insert([
+    		'curriculum_id' => $request->curriculum_id,
+    		'user_id' => $user_id,
+    		'name' => $request->name,
+    		'email' => $request->email,
+    		'mobile' => $request->mobile,
+    		'message' => $request->message
+    	]);
+
+    	if(!empty($result)){
+    		echo 1;
+    	}else{
+    		echo 0;
+    	}
+
+    }
+
     public function report(){
-        return view('admin.curriculum.report');
+        $curriculumEnquirys = CurriculumEnquiry::with('Curriculum')->orderBy('id','DESC')->get();
+        return view('admin.curriculum.report',compact('curriculumEnquirys'));
     }
 }
