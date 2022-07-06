@@ -35,6 +35,7 @@
                 <thead>
                     <tr>
                         <th>Sr.No.</th>
+                        <th>Institute Name</th>
                         <th>Curriculum Title</th>
                         <th>Student Name</th>
                         <th>Student Email</th>
@@ -49,6 +50,7 @@
                     @foreach ($curriculumEnquirys as $curriculum)
                         <tr>
                             <td>{{ $i++ }}</td>
+                            <td>{{ $curriculum->institude_name }}</td>
                             <td>{{ $curriculum->Curriculum->title }}</td>
                             <td>{{ $curriculum->name }}</td>
                             <td>{{ $curriculum->email }}</td>

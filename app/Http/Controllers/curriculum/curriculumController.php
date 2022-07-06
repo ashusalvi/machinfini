@@ -62,6 +62,7 @@ class curriculumController extends Controller
     }
 
     public function curriculumEnquiry(Request $request){
+        
         $rules = [
             'curriculum_id' => 'required|max:255',
             'name' => 'required|max:255',
@@ -76,6 +77,7 @@ class curriculumController extends Controller
         }
 
         $result = CurriculumEnquiry::insert([
+    		'institude_name' => $request->institute_name,
     		'curriculum_id' => $request->curriculum_id,
     		'user_id' => $user_id,
     		'name' => $request->name,
