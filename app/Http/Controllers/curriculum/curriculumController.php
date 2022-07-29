@@ -75,6 +75,12 @@ class curriculumController extends Controller
         if (Auth::check()) {
              $user_id = Auth::user()->id;
         }
+        $ci_per = '';
+        $ci_cp = '';
+        if ($request->ci_per != 0) {
+            $ci_per = $request->ci_per;
+            $ci_cp = $request->ci_cp;
+        }
 
         $result = CurriculumEnquiry::insert([
     		'institude_name' => $request->institute_name,
@@ -83,7 +89,9 @@ class curriculumController extends Controller
     		'name' => $request->name,
     		'email' => $request->email,
     		'mobile' => $request->mobile,
-    		'message' => $request->message
+    		'message' => $request->message,
+    		'cp_id' => $ci_cp,
+    		'cp_per' => $ci_per
     	]);
 
     	if(!empty($result)){

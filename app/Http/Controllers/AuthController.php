@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendPasswordResetLink;
 use App\User;
 use App\CompanyCoupon;
+use App\ICCoupon;
 use App\Model\CompanyEmployee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,6 @@ class AuthController extends Controller
         if ($code != NULL) {
             // $decrypted_code = decrypt($code);
             $user_code = User::where('reference_code',$code)->with('channelPartner')->first();
-            
             if (!empty($user_code) > 0)
             {   
                 $partner_logo = $user_code->channelPartner->logo;

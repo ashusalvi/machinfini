@@ -23,6 +23,7 @@ Route::get('term_condition', function(){
 })->name('term_condition');
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/ci/{ic_code?}', 'HomeController@index')->name('cihome');
 Route::get('/new_home', 'HomeController@newHome')->name('newHome');
 Route::get('clear', 'HomeController@clearCache')->name('clear_cache');
 
@@ -129,6 +130,10 @@ Route::group(['middleware' => ['auth'] ], function() {
             Route::get('create','CouponController@cpIndex')->name('cp_coupons');
             Route::post('save','CouponController@cpStore')->name('cp_saveCoupon');
             Route::get('delete/{id}','CouponController@delete')->name('cp_delete');
+            Route::get('cp_interactive_course_coupons','CouponController@ICIndex')->name('cp_interactive_course_coupons');
+            Route::post('ic_save','CouponController@icStore')->name('icSaveCoupon');
+            Route::get('ic_delete/{id}','CouponController@icdelete')->name('ic_delete');
+            Route::get('cp_interactive_course_enrollment','CouponController@ICEnroll')->name('cp_interactive_course_student');
         });
     });
 });

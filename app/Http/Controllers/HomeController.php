@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Course;
 use App\Post;
+use App\ICCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use App\Model\Curriculum;
@@ -21,7 +22,19 @@ class HomeController extends Controller
         return view('new_design_v1.index', compact('title', 'new_courses', 'featured_courses', 'popular_courses', 'posts')); 
     }
 
-    public function index(){
+    public function index($ic_code = NULL){
+
+        if ($ic_code != NULL) {
+            // $decrypted_code = decrypt($code);
+            $coupons = ICCoupon::where('code',base64_decode($ic_code))->where('is_deleted',1)->first();
+            if (!empty($coupons) > 0)
+            {   
+                session(['ic_code' => $coupons->code]);
+                session(['ic_code_cp' => $coupons->channel_partner]);
+                session(['ic_code_pr' => $coupons->percentage]);
+            }
+        }
+
         $title = __t('Home');
         $new_courses = Course::publish()->orderBy('created_at', 'desc')->take(12)->get();
         $featured_courses = Course::publish()->whereIsFeatured(1)->orderBy('featured_at', 'desc')->take(6)->get();

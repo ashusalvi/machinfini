@@ -169,6 +169,16 @@ function dashboard_menu(){
             'icon' => '<i class="la la-tools"></i>',
             'is_active' => request()->is('channel_partner/coupon/create'),
         ];
+        $menu['cp_interactive_course_coupons'] = [
+            'name' => 'Interactive Course Coupons',
+            'icon' => '<i class="la la-tools"></i>',
+            'is_active' => request()->is('channel_partner/coupon/cp_interactive_course_coupons'),
+        ];
+        $menu['cp_interactive_course_student'] = [
+        'name' => 'Interactive Course Enrollment',
+        'icon' => '<i class="la la-tools"></i>',
+        'is_active' => request()->is('channel_partner/coupon/cp_interactive_course_enrollment'),
+        ];
     }
 
     if ($user->college_user_type == 2) {

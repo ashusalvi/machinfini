@@ -6,12 +6,16 @@ use App\User;
 use Carbon\Carbon;
 use App\Course;
 use App\Coupon;
+use App\ICCoupon;
 use App\Model\Company;
 use App\Model\CompanyDepartment;
+use App\Model\Curriculum;
+use App\Model\CurriculumEnquiry;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\couponValidation;
+use App\Rules\IcCouponValidation;
 
 use Illuminate\Http\Request;
 
@@ -58,15 +62,53 @@ class CouponController extends Controller
         echo $html;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function ICIndex()
+    {   
+        $update_coupon = ICCoupon::where('to_date','<',date('Y-m-d'))->update(['is_deleted' => 0]);
+        $coupons = ICCoupon::where('channel_partner',Auth::user()->id)->where('is_deleted',1)->get();
+        return view('channelPartner.ic_coupon', compact( 'coupons'));
     }
+
+    public function icStore(Request $request)
+    {   
+        $rules = [
+            'name' => 'required|max:255',
+            'code' => [
+                        'required','regex:/^[a-zA-Z0-9]+$/u', new IcCouponValidation
+                    ],
+            'percentage' => 'required|numeric|lte:50|gte:1',
+            'from_date' => 'required',
+            'to_date' => 'required',
+        ];
+
+        $this->validate($request, $rules);
+        
+        $data = [
+            'name'=> $request->name,
+            'code' => 'MI'.Auth::user()->id.$request->code,
+            'percentage' => $request->percentage,
+            'channel_partner' => Auth::user()->id,
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
+        ];
+        $insertCoupon = ICCoupon::insert($data);
+        return redirect::back()->with('message', 'Coupon created successfully !');
+    }
+
+    public function icdelete(Request $request)
+    {	
+        $update_coupon = ICCoupon::where('id',$request->id)->update(['is_deleted' => 0]);
+        return redirect()->route('cp_interactive_course_coupons')->with('message', 'Coupon deleted successfully !');
+    }
+
+    public function ICEnroll()
+    {
+        $curriculumEnquirys =
+        CurriculumEnquiry::with('Curriculum')->where('cp_id',Auth::user()->id)->orderBy('id','DESC')->get();
+        $coupons = ICCoupon::where('channel_partner',Auth::user()->id)->where('is_deleted',1)->get();
+        return view('channelPartner.ic_enrol', compact( 'coupons','curriculumEnquirys'));
+    }
+
 
     /**
      * Store a newly created resource in storage.
