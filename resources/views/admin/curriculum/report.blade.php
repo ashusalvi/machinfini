@@ -37,6 +37,9 @@
                         <th>Sr.No.</th>
                         <th>Institute Name</th>
                         <th>Curriculum Title</th>
+                        <th>Price</th>
+                        <th>Offer Price</th>
+                        <th>Off %</th>
                         <th>Student Name</th>
                         <th>Student Email</th>
                         <th>Student Mobile</th>
@@ -52,6 +55,15 @@
                             <td>{{ $i++ }}</td>
                             <td>{{ $curriculum->institude_name }}</td>
                             <td>{{ $curriculum->Curriculum->title }}</td>
+                            <td>{{ $curriculum->Curriculum->price }}</td>
+                            @if ($curriculum->cp_id != null)
+                                <td>{{ $curriculum->Curriculum->price - $curriculum->Curriculum->price * ($curriculum->cp_per / 100) }}
+                                </td>
+                                <td>{{ $curriculum->cp_per }}%</td>
+                            @else
+                                <td>{{ $curriculum->Curriculum->price }}</td>
+                                <td>0%</td>
+                            @endif
                             <td>{{ $curriculum->name }}</td>
                             <td>{{ $curriculum->email }}</td>
                             <td>{{ $curriculum->mobile }}</td>

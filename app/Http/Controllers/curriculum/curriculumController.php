@@ -34,6 +34,11 @@ class curriculumController extends Controller
         $file->move($destinationPath,$file->getClientOriginalName());
         $submitURL = $destinationPath.'/'.$file->getClientOriginalName();
 
+        $file = $request->file('image');
+        $destinationPath = 'uploadsCurriculumImage';
+        $file->move($destinationPath,$file->getClientOriginalName());
+        $submitImageURL = $destinationPath.'/'.$file->getClientOriginalName();
+
     	$result = Curriculum::insert([
     		'type' => $request->type,
     		'title' => $request->title,
@@ -43,6 +48,7 @@ class curriculumController extends Controller
     		'tag' => $request->tag,
     		'save' => $request->save,
             'file'=>$submitURL,
+            'image_name'=>$submitImageURL,
     	]);
 
     	if(!empty($result)){

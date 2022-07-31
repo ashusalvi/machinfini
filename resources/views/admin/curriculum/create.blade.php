@@ -28,7 +28,6 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-
     </style>
 @endsection
 
@@ -38,8 +37,7 @@
     </div>
 
     <div class="form-body">
-        <form method="post" action="{{ route('curriculum.save') }}" enctype="multipart/form-data"
-            style="max-width: 1039px;">
+        <form method="post" action="{{ route('curriculum.save') }}" enctype="multipart/form-data" style="max-width: 1039px;">
 
             <h5 class="title"> Details</h5>
 
@@ -111,9 +109,15 @@
 
                 <div class="form-group col-md-4 {{ form_error($errors, 'document')->class }}">
                     <label><b>Upload Document <span>*</span></b></label>
-                    <input type="file" class="form-control" name="document" placeholder="Enter document amount in percent"
-                        value="{{ old('document') }}" required>
+                    <input type="file" class="form-control" name="document"
+                        placeholder="Enter document amount in percent" value="{{ old('document') }}" required>
                     {!! form_error($errors, 'document')->message !!}
+                </div>
+
+                <div class="form-group col-md-4 {{ form_error($errors, 'document')->class }}">
+                    <label><b>Upload image <span>* (1:2 ratio)</span></b></label>
+                    <input type="file" class="form-control" name="image" value="{{ old('image') }}" required>
+                    {!! form_error($errors, 'image')->message !!}
                 </div>
             </div>
 
